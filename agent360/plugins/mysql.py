@@ -129,7 +129,11 @@ class Plugin(plugins.BasePlugin):
                 pass
 
         cursor = db.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SHOW SLAVE STATUS')
+        
+        try:
+            cursor.execute('SHOW REPLICA STATUS')
+        except:
+            cursor.execute('SHOW SLAVE STATUS')
         query_result_slave = cursor.fetchone()
         non_delta_slave = (
             'slave_io_state',
